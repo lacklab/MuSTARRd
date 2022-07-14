@@ -1,0 +1,12 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bbmap
+  - bwa
+  - mawk
+  - parallel
+  - pigz
+  - samtools
+  - umi_tools
