@@ -37,7 +37,7 @@ rule merge_DNA_treplicates:
             samtools merge -o {output} {input}
             samtools index {output}
         else
-            cp {input} {output}
+            mv {input} {output}
             samtools index {output}
         fi
         """
