@@ -8,7 +8,7 @@ git clone https://github.com/pauldrinn/MuSTARRd.git
 cd MuSTARRd
 ```
 2. Change `config/config.yaml`, `config/samples.tsv`, `config/units.tsv` and `profile/config.yaml` (documentation WIP)
-3. Run snakemake with the command:
+3. Run the snakemake workflow with the following:
 ```py
 snakemake --profile profile/ 
 ```
