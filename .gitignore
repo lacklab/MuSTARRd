@@ -131,6 +131,7 @@ dmypy.json
 # Project
 .snakemake/
 .tmp/
+run_snakemake.sh
 logs/
 reads/
 results/
