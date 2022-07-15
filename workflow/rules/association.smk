@@ -245,4 +245,4 @@ rule parse_mutations:
     conda:
         "../envs/association.yaml"
     shell:
-        "pigz -dc {input} | uniq | awk -f workflow/scripts/parse_mutations.awk > {output}"
+        "pigz -dc {input} | uniq | awk -f workflow/scripts/parse_mutations.awk | pigz > {output}"
