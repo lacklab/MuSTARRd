@@ -2,7 +2,7 @@ rule merge_DNA_reads:
     input:
         get_raw_data,
     output:
-        OUTPUT_DIR + "/aligned_dna/{sample}_{unit}_merged.fq.gz",
+        "results/aligned_dna/{sample}_{unit}_merged.fq.gz",
     conda:
         "../envs/association.yaml"
     shell:
@@ -13,10 +13,10 @@ rule merge_DNA_reads:
 
 rule map_DNA_reads:
     input:
-        OUTPUT_DIR + "/aligned_dna/{sample}_{unit}_merged.fq.gz",
+        "results/aligned_dna/{sample}_{unit}_merged.fq.gz",
     output:
-        coordsorted=OUTPUT_DIR + "/aligned_dna/{sample}_{unit}.bam",
-        qc=OUTPUT_DIR + "/qc/total-reads.{sample}_{unit}",
+        coordsorted="results/aligned_dna/{sample}_{unit}.bam",
+        qc="results/qc/total-reads.{sample}_{unit}",
     params:
         ref_bwa=config["REF_BWA_IDX"],
     threads: 64
@@ -33,7 +33,7 @@ rule merge_DNA_treplicates:
     input:
         get_technical_replicates,
     output:
-        OUTPUT_DIR + "/aligned_dna/{sample}.bam",
+        "results/aligned_dna/{sample}.bam",
     conda:
         "../envs/association.yaml"
     shell:
@@ -50,9 +50,9 @@ rule merge_DNA_treplicates:
 
 rule remove_DNA_indels:
     input:
-        OUTPUT_DIR + "/aligned_dna/{sample}.bam",
+        "results/aligned_dna/{sample}.bam",
     output:
-        OUTPUT_DIR + "/aligned_dna/{sample}.noindels.bam",
+        "results/aligned_dna/{sample}.noindels.bam",
     threads: 64
     conda:
         "../envs/association.yaml"
@@ -68,9 +68,9 @@ rule remove_DNA_indels:
 
 rule filter_DNA_reads:
     input:
-        OUTPUT_DIR + "/aligned_dna/{sample}.noindels.bam",
+        "results/aligned_dna/{sample}.noindels.bam",
     output:
-        OUTPUT_DIR + "/filtered_dna/{sample}.filtered.bam",
+        "results/filtered_dna/{sample}.filtered.bam",
     params:
         cap=config["PRIMERS"],
         umi1=config["UMI1_LEN"],
@@ -87,9 +87,9 @@ rule filter_DNA_reads:
 
 rule reformat_DNA_reads_to_fastq:
     input:
-        OUTPUT_DIR + "/filtered_dna/{sample}.filtered.bam",
+        "results/filtered_dna/{sample}.filtered.bam",
     output:
-        OUTPUT_DIR + "/filtered_dna/{sample}.filtered.fq.gz",
+        "results/filtered_dna/{sample}.filtered.fq.gz",
     conda:
         "../envs/association.yaml"
     shell:
@@ -100,9 +100,9 @@ rule reformat_DNA_reads_to_fastq:
 
 rule move_UMIs_seq2qname:
     input:
-        OUTPUT_DIR + "/filtered_dna/{sample}.filtered.fq.gz",
+        "results/filtered_dna/{sample}.filtered.fq.gz",
     output:
-        OUTPUT_DIR + "/umi_dna/{sample}.UMI.fq.gz",
+        "results/umi_dna/{sample}.UMI.fq.gz",
     conda:
         "../envs/association.yaml"
     shell:
@@ -113,9 +113,9 @@ rule move_UMIs_seq2qname:
 
 rule map_qname_UMI:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.UMI.fq.gz",
+        "results/umi_dna/{sample}.UMI.fq.gz",
     output:
-        OUTPUT_DIR + "/umi_dna/{sample}.UMI.bam",
+        "results/umi_dna/{sample}.UMI.bam",
     threads: 64
     params:
         fixed_ref=config["REF_FIXED"],
@@ -129,9 +129,9 @@ rule map_qname_UMI:
 
 rule get_UMIs:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.UMI.bam",
+        "results/umi_dna/{sample}.UMI.bam",
     output:
-        OUTPUT_DIR + "/umi_dna/{sample}.umis.tsv.gz",
+        "results/umi_dna/{sample}.umis.tsv.gz",
     conda:
         "../envs/association.yaml"
     shell:
@@ -150,9 +150,9 @@ rule get_UMIs:
 
 rule mask_anchors:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.umis.tsv.gz",
+        "results/umi_dna/{sample}.umis.tsv.gz",
     output:
-        OUTPUT_DIR + "/umi_dna/{sample}.umis.masked.tsv.gz",
+        "results/umi_dna/{sample}.umis.masked.tsv.gz",
     conda:
         "../envs/association.yaml"
     shell:
@@ -167,9 +167,9 @@ rule mask_anchors:
 
 rule count_UMIs:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.umis.masked.tsv.gz",
+        "results/umi_dna/{sample}.umis.masked.tsv.gz",
     output:
-        OUTPUT_DIR + "/umi_dna/{sample}.umicounts.masked.tsv.gz",
+        "results/umi_dna/{sample}.umicounts.masked.tsv.gz",
     threads: 64
     conda:
         "../envs/association.yaml"
@@ -181,9 +181,9 @@ rule count_UMIs:
 
 rule count_UMIs_per_region:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.umicounts.masked.tsv.gz",
+        "results/umi_dna/{sample}.umicounts.masked.tsv.gz",
     output:
-        OUTPUT_DIR + "/umi_dna/{sample}.regioncounts.masked.tsv.gz",
+        "results/umi_dna/{sample}.regioncounts.masked.tsv.gz",
     threads: 64
     conda:
         "../envs/association.yaml"
@@ -195,10 +195,10 @@ rule count_UMIs_per_region:
 
 rule get_read_per_BC:
     input:
-        umis=OUTPUT_DIR + "/umi_dna/{sample}.umis.masked.tsv.gz",
-        umicounts=OUTPUT_DIR + "/umi_dna/{sample}.umicounts.masked.tsv.gz",
+        umis="results/umi_dna/{sample}.umis.masked.tsv.gz",
+        umicounts="results/umi_dna/{sample}.umicounts.masked.tsv.gz",
     output:
-        temp(OUTPUT_DIR + "/umi_dna/{sample}.RperBC.7.tsv.gz"),
+        temp("results/umi_dna/{sample}.RperBC.7.tsv.gz"),
     conda:
         "../envs/association.yaml"
     shell:
@@ -209,10 +209,10 @@ rule get_read_per_BC:
 
 rule get_read_per_mut:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.RperBC.7.tsv.gz",
+        "results/umi_dna/{sample}.RperBC.7.tsv.gz",
     output:
-        out=OUTPUT_DIR + "/umi_dna/{sample}.table.tsv.gz",
-        tmp=temp(OUTPUT_DIR + "/umi_dna/{sample}.tmp1.tsv"),
+        out="results/umi_dna/{sample}.table.tsv.gz",
+        tmp=temp("results/umi_dna/{sample}.tmp1.tsv"),
     conda:
         "../envs/association.yaml"
     shell:
@@ -228,9 +228,9 @@ rule get_read_per_mut:
 
 rule apply_UMI_filters:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.table.tsv.gz",
+        "results/umi_dna/{sample}.table.tsv.gz",
     output:
-        OUTPUT_DIR + "/umi_dna/{sample}.umifiltered.tsv.gz",
+        "results/umi_dna/{sample}.umifiltered.tsv.gz",
     conda:
         "../envs/association.yaml"
     shell:
@@ -239,9 +239,9 @@ rule apply_UMI_filters:
 
 rule parse_mutations:
     input:
-        OUTPUT_DIR + "/umi_dna/{sample}.umifiltered.tsv.gz",
+        "results/umi_dna/{sample}.umifiltered.tsv.gz",
     output:
-        OUTPUT_DIR + "/{sample}.association.tsv.gz",
+        "results/{sample}.association.tsv.gz",
     conda:
         "../envs/association.yaml"
     shell:

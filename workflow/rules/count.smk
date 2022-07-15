@@ -2,8 +2,8 @@ rule map_RNA_reads:
     input:
         get_raw_data,
     output:
-        coordsorted=OUTPUT_DIR + "/aligned_rna/{sample}_{unit}.bam",
-        qc=OUTPUT_DIR + "/qc/total-reads.{sample}_{unit}",
+        coordsorted="results/aligned_rna/{sample}_{unit}.bam",
+        qc="results/qc/total-reads.{sample}_{unit}",
     params:
         ref_bwa=config["REF_BWA_IDX"],
     threads: 64
@@ -20,7 +20,7 @@ rule merge_RNA_treplicates:
     input:
         get_technical_replicates,
     output:
-        OUTPUT_DIR + "/aligned_rna/{sample}.bam",
+        "results/aligned_rna/{sample}.bam",
     conda:
         "../envs/count.yaml"
     shell:
@@ -37,9 +37,9 @@ rule merge_RNA_treplicates:
 
 rule remove_RNA_indels:
     input:
-        OUTPUT_DIR + "/aligned_rna/{sample}.bam",
+        "results/aligned_rna/{sample}.bam",
     output:
-        OUTPUT_DIR + "/aligned_rna/{sample}.noindels.bam",
+        "results/aligned_rna/{sample}.noindels.bam",
     threads: 64
     conda:
         "../envs/count.yaml"
@@ -57,9 +57,9 @@ rule remove_RNA_indels:
 
 rule filter_RNA_reads:
     input:
-        OUTPUT_DIR + "/aligned_rna/{sample}.noindels.bam",
+        "results/aligned_rna/{sample}.noindels.bam",
     output:
-        OUTPUT_DIR + "/filtered_rna/{sample}.filtered.bam",
+        "results/filtered_rna/{sample}.filtered.bam",
     params:
         cap=config["PRIMERS"],
         umi1=config["UMI1_LEN"],
@@ -76,9 +76,9 @@ rule filter_RNA_reads:
 
 rule fix_and_sort_RNA_reads:
     input:
-        OUTPUT_DIR + "/filtered_rna/{sample}.filtered.bam",
+        "results/filtered_rna/{sample}.filtered.bam",
     output:
-        OUTPUT_DIR + "/filtered_rna/{sample}.filtered.qname.bam",
+        "results/filtered_rna/{sample}.filtered.qname.bam",
     threads: 64
     conda:
         "../envs/count.yaml"
@@ -92,10 +92,10 @@ rule fix_and_sort_RNA_reads:
 
 rule count_RNA_UMIs:
     input:
-        OUTPUT_DIR + "/filtered_rna/{sample}.filtered.qname.bam",
+        "results/filtered_rna/{sample}.filtered.qname.bam",
     output:
-        counts=OUTPUT_DIR + "/{sample}.count.tsv.gz",
-        tmp=temp(OUTPUT_DIR + "/{sample}.count.tmp"),
+        counts="results/{sample}.count.tsv.gz",
+        tmp=temp("results/{sample}.count.tmp"),
     threads: 64
     conda:
         "../envs/count.yaml"
