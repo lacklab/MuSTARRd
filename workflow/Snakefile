@@ -1,12 +1,15 @@
 configfile: "config/config.yaml"
 
+
 include: "rules/common.smk"
 include: "rules/association.smk"
 include: "rules/count.smk"
 
+
 wildcard_constraints:
-    sample = "|".join(list(samples["sample"]))
+    sample="|".join(list(samples["sample"])),
+
 
 rule all:
     input:
-        outputs
+        outputs,
