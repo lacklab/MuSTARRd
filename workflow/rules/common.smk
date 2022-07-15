@@ -24,9 +24,4 @@ def get_technical_replicates(wildcards):
     )
 
 
-outputs = []
-for sample in samples["sample"]:
-    if samples.loc[sample, "type"] == "DNA":
-        outputs.append(f"results/{sample}.association.tsv.gz")
-    if samples.loc[sample, "type"] == "RNA":
-        outputs.append(f"results/{sample}.count.tsv.gz")
+outputs = ["results/DNA.RNA.counts.tsv.gz"]

@@ -5,7 +5,7 @@
     sub(/MD:Z:/, "", md);
     
     if (nm == 0) {
-         printf "%s\t%d\t%d\t%s", $1, $7, $8, "WT\n";
+         printf "%s\t%d\t%d\t%s:%s", $1, $7, $8, $3, "WT\n";
     }
     else {
         split(md, a, "[ACTGN]", seps);

@@ -241,8 +241,8 @@ rule parse_mutations:
     input:
         "results/umi_dna/{sample}.umifiltered.tsv.gz",
     output:
-        "results/{sample}.association.tsv.gz",
+        temp("results/{sample}.association.tsv"),
     conda:
         "../envs/association.yaml"
     shell:
-        "pigz -dc {input} | uniq | awk -f workflow/scripts/parse_mutations.awk | pigz > {output}"
+        "pigz -dc {input} | uniq | awk -f workflow/scripts/parse_mutations.awk | sed -e '1i\BC\tBCTOTAL\tBCMAXMUT\tVARIANTS' > {output}"

@@ -94,7 +94,7 @@ rule count_RNA_UMIs:
     input:
         "results/filtered_rna/{sample}.filtered.qname.bam",
     output:
-        counts="results/{sample}.count.tsv.gz",
+        counts=temp("results/{sample}.count.tsv"),
         tmp=temp("results/{sample}.count.tmp"),
     threads: 64
     conda:
@@ -105,5 +105,5 @@ rule count_RNA_UMIs:
         <(samtools view -@ {threads} {input} | awk '$9 > 0' | cut -f10 | cut -c -12 | sed 's/./N/2') \
         <(samtools view -@ {threads} {input} | awk '$9 < 0' | cut -f10 | rev | cut -c -12 | sed 's/./N/2' | rev) > {output.tmp}
 
-        parsort -S5G {output.tmp} | uniq -c | awk '{{printf("%s\t%d\\n", $2, $1);}}' | parsort -k1,1 -S5G | pigz > {output.counts}
+        parsort -S5G {output.tmp} | uniq -c | awk '{{printf("%s\t%d\\n", $2, $1);}}' | parsort -k1,1 -S5G > {output.counts}
         """
