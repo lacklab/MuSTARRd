@@ -26,4 +26,4 @@ rule combine_RNA_and_DNA_counts:
     output:
         "results/DNA.RNA.counts.tsv.gz"
     shell:
-        "join --header -t $'\t' -a1 -a2 -e0 -o auto <(pigz -dc {input.RNA}) <(pigz -dc {input.DNA}) | pigz > {output}"
+        "join --header -t $'\t' -a2 -e0 -o auto <(pigz -dc {input.RNA}) <(pigz -dc {input.DNA}) | pigz > {output}"
