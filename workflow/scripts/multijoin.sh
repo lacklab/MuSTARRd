@@ -13,16 +13,16 @@ echo -en "\n"
 
 join_rec() {
     if [ $# -eq 1 ]; then
-        join - "$1"
+        join -t $'\t' -a1 -a2 -e0 -o auto - "$1"
     else
         f=$1; shift
-        join - "$f" | join_rec "$@"
+        join -t $'\t' -a1 -a2 -e0 -o auto - "$f" | join_rec "$@"
     fi
 }
 
 if [ $# -le 2 ]; then
-    join "$@" | tr " " "\t"
+    join -t $'\t' -a1 -a2 -e0 -o auto "$@"
 else
     f1=$1; f2=$2; shift 2
-    join "$f1" "$f2" | join_rec "$@" | tr " " "\t"
+    join -t $'\t' -a1 -a2 -e0 -o auto "$f1" "$f2" | join_rec "$@"
 fi

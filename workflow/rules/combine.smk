@@ -4,7 +4,7 @@ rule combine_RNA_counts:
     output:
         "results/RNA.count.tsv.gz",
     shell:
-        "bash workflow/scripts/multijoin.sh {input} | pigz > {output}"
+        "bash workflow/scripts/multijoin.sh {input} | sed 's/\t$//g' | pigz > {output}"
 
 rule combine_DNA_associations:
     input:
@@ -26,4 +26,4 @@ rule combine_RNA_and_DNA_counts:
     output:
         "results/DNA.RNA.counts.tsv.gz"
     shell:
-        "join --header -t $'\t' <(pigz -dc {input.RNA}) <(pigz -dc {input.DNA}) > {output}"
+        "join --header -t $'\t' -a1 -a2 -e0 -o auto <(pigz -dc {input.RNA}) <(pigz -dc {input.DNA}) | pigz > {output}"
