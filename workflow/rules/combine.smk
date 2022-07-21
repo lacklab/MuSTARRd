@@ -1,14 +1,21 @@
 rule combine_RNA_counts:
     input:
-        expand("results/{sample}.count.tsv", sample=samples[samples["type"] == "RNA"]["sample"]),
+        expand(
+            "results/{sample}.count.tsv",
+            sample=samples[samples["type"] == "RNA"]["sample"],
+        ),
     output:
         "results/RNA.count.tsv.gz",
     shell:
         "bash workflow/scripts/multijoin.sh {input} | sed 's/\t$//g' | pigz > {output}"
 
+
 rule combine_DNA_associations:
     input:
-        expand("results/{sample}.association.tsv", sample=samples[samples["type"] == "DNA"]["sample"]),
+        expand(
+            "results/{sample}.association.tsv",
+            sample=samples[samples["type"] == "DNA"]["sample"],
+        ),
     output:
         "results/DNA.association.tsv.gz",
     shell:
@@ -19,11 +26,12 @@ rule combine_DNA_associations:
         ' {input} | pigz > {output}
         """
 
+
 rule combine_RNA_and_DNA_counts:
     input:
         DNA="results/DNA.association.tsv.gz",
         RNA="results/RNA.count.tsv.gz",
     output:
-        "results/DNA.RNA.counts.tsv.gz"
+        "results/DNA.RNA.counts.tsv.gz",
     shell:
         "join --header -t $'\t' -a2 -e0 -o auto <(pigz -dc {input.RNA}) <(pigz -dc {input.DNA}) | pigz > {output}"
