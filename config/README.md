@@ -13,7 +13,9 @@ In order to configure your analysis, make changes to `config.yaml`.
 | INPUT   |           | DNA  |
 
 sample: Sample name
+
 condition: Treatment condition (blank if none; blank for DNA)
+
 type: Sample type (RNA or DNA)
 
 2. `UNITS`: A tab-separated file with the following example should be provided to specify the units (replicates or lanes):
@@ -30,8 +32,11 @@ type: Sample type (RNA or DNA)
 | INPUT   | 1    | reads/NL18_L2_1.fq.gz             | reads/NL18_L2_2.fq.gz             |
 
 sample: Sample name (same as in samples.tsv)
+
 unit: Unit no
+
 fq1: Path to the 1st FASTQ file
+
 fq2: Path to the 2nd FASTQ file
 
 3. `PRIMERS`: A tab-separated file with the following specificiations (and example row) should be provided to specify the regions of analysis:
