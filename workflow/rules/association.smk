@@ -18,7 +18,7 @@ rule map_DNA_reads:
         coordsorted="results/aligned_dna/{sample}_{unit}.bam",
         qc="results/qc/total-reads.{sample}_{unit}",
     params:
-        ref_bwa=config["REF_BWA_IDX"],
+        ref_bwa=config["REF"]["BWA_IDX"],
     threads: 64
     conda:
         "../envs/association.yaml"
@@ -73,9 +73,9 @@ rule filter_DNA_reads:
         "results/filtered_dna/{sample}.filtered.bam",
     params:
         cap=config["PRIMERS"],
-        umi1=config["UMI1_LEN"],
-        umi2=config["UMI2_LEN"],
-        insert_size=config["EXPECTED_TLEN"],
+        umi1=config["SEQ"]["UMI1_LEN"],
+        umi2=config["SEQ"]["UMI2_LEN"],
+        insert_size=config["SEQ"]["EXPECTED_TLEN"],
     threads: 64
     conda:
         "../envs/association.yaml"
@@ -118,7 +118,7 @@ rule map_qname_UMI:
         "results/umi_dna/{sample}.UMI.bam",
     threads: 64
     params:
-        fixed_ref=config["REF_FIXED"],
+        fixed_ref=config["REF"]["FIXED"],
     conda:
         "../envs/association.yaml"
     shell:

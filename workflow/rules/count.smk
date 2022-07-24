@@ -5,7 +5,7 @@ rule map_RNA_reads:
         coordsorted="results/aligned_rna/{sample}_{unit}.bam",
         qc="results/qc/total-reads.{sample}_{unit}",
     params:
-        ref_bwa=config["REF_BWA_IDX"],
+        ref_bwa=config["REF"]["BWA_IDX"],
     threads: 64
     conda:
         "../envs/count.yaml"
@@ -62,9 +62,9 @@ rule filter_RNA_reads:
         "results/filtered_rna/{sample}.filtered.bam",
     params:
         cap=config["PRIMERS"],
-        umi1=config["UMI1_LEN"],
-        umi2=config["UMI2_LEN"],
-        insert_size=config["EXPECTED_TLEN"],
+        umi1=config["SEQ"]["UMI1_LEN"],
+        umi2=config["SEQ"]["UMI2_LEN"],
+        insert_size=config["SEQ"]["EXPECTED_TLEN"],
     threads: 64
     conda:
         "../envs/count.yaml"

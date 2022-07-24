@@ -1,17 +1,15 @@
-RUN_NAME: "RUN1"
-
 SAMPLES: config/samples.tsv
 UNITS: config/units.tsv
-
-### REFERENCE GENOME
-REF_FASTA: "/groups/lackgrp/genomeAnnotations/hg19/hg19.fa"
-REF_BWA_IDX: "/groups/lackgrp/genomeAnnotations/hg19/hg19.bwa.idx"
-REF_FIXED: "/groups/lackgrp/projects/inv-enhancer-random-mutagenesis/ref/hg19.AmpEZ40enhancermut.wt.fa"
-
-### REGIONS AND PRIMERS
 PRIMERS: "resources/capture.wprimers.tsv"
 
+### REFERENCE GENOME
+REF:
+  FA: "/groups/lackgrp/genomeAnnotations/hg19/hg19.fa"
+  BWA_IDX: "/groups/lackgrp/genomeAnnotations/hg19/hg19.bwa.idx"
+  FIXED: "/groups/lackgrp/projects/inv-enhancer-random-mutagenesis/ref/hg19.AmpEZ40enhancermut.wt.fa"
+  
 ### READ PROPERTIES
-UMI1_LEN: 6
-UMI2_LEN: 6
-EXPECTED_TLEN: 310
+SEQ:
+  UMI1_LEN: 6
+  UMI2_LEN: 6
+  EXPECTED_TLEN: 310
