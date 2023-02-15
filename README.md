@@ -9,7 +9,7 @@ conda activate snakemake
 ```
 2. Clone the repo
 ```sh
-git clone https://github.com/pauldrinn/MuSTARRd.git
+git clone https://github.com/lacklab/MuSTARRd.git
 cd MuSTARRd
 ```
 3. Modify `config/config.yaml`, `config/samples.tsv` and `config/units.tsv` (see [here](config/README.md))
